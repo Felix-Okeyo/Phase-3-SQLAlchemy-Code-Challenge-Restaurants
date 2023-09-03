@@ -1,9 +1,10 @@
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, inspect
 from sqlalchemy import ForeignKey, Table, Column, Integer, String
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy.ext.declarative import declarative_base
 
 engine = create_engine('sqlite:///restaurbase.db')
+inspector = inspect(engine)
 
 Base = declarative_base()
 
@@ -60,3 +61,5 @@ class Review(Base):
         return f'Review (id={self.id}, ' +\
             f'star rating given = {self.star_rating}, ' +\
             f'restaurant id ={self.restaurant_id})'
+
+Base.metadata.create_all(engine)

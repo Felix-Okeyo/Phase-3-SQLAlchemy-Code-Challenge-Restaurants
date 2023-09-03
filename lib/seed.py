@@ -37,12 +37,13 @@ if __name__ == '__main__':
         restaurants.append(restaurant)
         
     customers = []
-    for i in range(50):
+    for i in range(100):
         customer = Customer(
-            name = fake.name(),
+            first_name = fake.name(),
+            last_name = fake.name(),
         )
         session.add(customer)
-        session.commit(customer)
+        session.commit()
         
         customers.append(customer)
         
