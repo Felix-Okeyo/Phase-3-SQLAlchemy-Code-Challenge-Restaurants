@@ -1,5 +1,5 @@
-from sqlalchemy import create_engine, func
-from sqlalchemy import ForeignKey, Table, Column, Integer, String, DateTime
+from sqlalchemy import create_engine
+from sqlalchemy import ForeignKey, Table, Column, Integer, String
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -33,18 +33,19 @@ class Restaurant(Base):
     
 
 class Customer(Base):
-    __tablename__ = 'Customers'
+    __tablename__ = 'customers'
+    
     id = Column(Integer(), primary_key = True)
     first_name = Column(String())
     last_name = Column(String())
     
-    customers = relationship('Customer', secondary = restaurant_customer, back_populates = 'restaurants'),
-    reviews = relationship('Review', backref = backref('restaurant'), cascade = 'all, delete-orphan')
+    restaurants = relationship('Restaurant', secondary = restaurant_customer, back_populates = 'customers')
+    reviews = relationship('Review', backref = backref('customer'), cascade = 'all, delete-orphan')
     
     def __repr__(self):
         return f'Customer (id={self.id}),' +\
-            f'name = {self.name},' +\
-            f'price = {self.price})'
+            f'name = {self.first_name},' +\
+            f'price = {self.last_name})'
     
 class Review(Base):
     __tablename__ = 'reviews'
