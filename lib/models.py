@@ -11,7 +11,7 @@ restaurant_customer = Table(
     'restaurants_customers',
     Base.metadata,
     Column('restaurant_id', ForeignKey('restaurants.id'), primary_key = True),
-    Column('cusromer_id', ForeignKey('customers.id'), primary_key = True),
+    Column('customer_id', ForeignKey('customers.id'), primary_key = True),
     extend_existing = True,
 )
 
@@ -22,7 +22,7 @@ class Restaurant(Base):
     name = Column(String())
     price = Column(Integer())
     
-    customers = relationship('User', secondary = restaurant_customer, back_populates = 'restaurants')
+    customers = relationship('Customer', secondary = restaurant_customer, back_populates = 'restaurants')
     reviews = relationship ('Review', backref = backref('restaurant'), cascade = 'all, delete-orphan')
     
     def __repr__(self):
@@ -38,6 +38,13 @@ class Customer(Base):
     first_name = Column(String())
     last_name = Column(String())
     
+    customers = relationship('Customer', secondary = restaurant_customer, back_populates = 'restaurants'),
+    reviews = relationship('Review', backref = backref('restaurant'), cascade = 'all, delete-orphan')
+    
+    def __repr__(self):
+        return f'Customer (id={self.id}),' +\
+            f'name = {self.name},' +\
+            f'price = {self.price})'
     
 class Review(Base):
     __tablename__ = 'reviews'
