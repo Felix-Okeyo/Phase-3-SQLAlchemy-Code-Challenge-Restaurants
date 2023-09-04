@@ -104,8 +104,8 @@ class Review(Base):
     restaurant_id = Column(Integer(), ForeignKey('restaurants.id'))
     customer_id = Column(Integer(), ForeignKey('customers.id'))
     
-    restaurant = relationship('Restaurant', back_populates = 'reviews')
-    customer = relationship('Customer', back_populates ='reviews')
+    # restaurant = relationship('Restaurant', back_populates = 'reviews')
+    # customer = relationship('Customer', back_populates ='reviews')
     # return the customer instance associated with the review 
     # @property
     def review_customer(self):
