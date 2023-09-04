@@ -27,7 +27,7 @@ if __name__ == '__main__':
     for item in range (50):
         restaurant = Restaurant(
             name = random.choice(names),
-            price = random.randint(2000, 15000)
+            price = random.randint(200, 500)
         )
         
         # add and commit individually to get IDs back
@@ -37,7 +37,7 @@ if __name__ == '__main__':
         restaurants.append(restaurant)
         
     customers = []
-    for i in range(100):
+    for i in range(50):
         customer = Customer(
             first_name = fake.first_name(),
             last_name = fake.last_name(),

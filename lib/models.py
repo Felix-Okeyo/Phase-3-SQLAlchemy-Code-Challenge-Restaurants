@@ -42,12 +42,9 @@ class Restaurant(Base):
     #This should return an list of strings with all the reviews for this restaurant
     #"Review for {insert restaurant name} by {insert customer's full name}: {insert review star_rating} stars.",
     def restaurant_all_reviews(self):
-        rest_review_sentences = []
-        for review in self.reviews:
-            customer_name = review.customer.full_name()
-            rest_review_sentences = f'Review for {self.name} by {customer_name}: {review.star_rating} stars.' 
-        return rest_review_sentences
-    
+        restaurant_review = [review.review_full_review() for review in self.reviews]
+        return restaurant_review
+   
     def __repr__(self):
         return f'Restaurant (id={self.id}, ' + \
             f'name = {self.name}, ' + \
@@ -107,6 +104,8 @@ class Review(Base):
     restaurant_id = Column(Integer(), ForeignKey('restaurants.id'))
     customer_id = Column(Integer(), ForeignKey('customers.id'))
     
+    restaurant = relationship('Restaurant', back_populates = 'reviews')
+    customer = relationship('Customer', back_populates ='reviews')
     # return the customer instance associated with the review 
     # @property
     def review_customer(self):
@@ -118,9 +117,14 @@ class Review(Base):
         
     def review_full_review(self):
         return f'Review for {self.review_restaurant().name} by {self.review_customer().full_name()}: {self.star_rating} stars'    
+    
     def __repr__(self):
         return f'Review (id={self.id}, ' +\
             f'star rating given = {self.star_rating}, ' +\
             f'restaurant id ={self.restaurant_id})'
 
 Base.metadata.create_all(engine)
+
+
+# customer = session.query(Customer).filter_by(id=1).first()
+
