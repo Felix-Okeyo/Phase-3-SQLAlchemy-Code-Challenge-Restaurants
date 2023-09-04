@@ -12,9 +12,9 @@ if __name__ == '__main__':
     Session = sessionmaker(bind=engine)
     session = Session()
     
-    session.query(Restaurant).delete()
-    session.query(Review).delete()
-    session.query(Customer).delete()
+    # session.query(Restaurant).delete()
+    # session.query(Review).delete()
+    # session.query(Customer).delete()
     
     fake = Faker()
     
@@ -39,8 +39,8 @@ if __name__ == '__main__':
     customers = []
     for i in range(100):
         customer = Customer(
-            first_name = fake.name(),
-            last_name = fake.name(),
+            first_name = fake.first_name(),
+            last_name = fake.last_name(),
         )
         session.add(customer)
         session.commit()
