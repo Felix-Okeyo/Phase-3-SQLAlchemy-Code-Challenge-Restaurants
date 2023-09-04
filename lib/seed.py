@@ -12,9 +12,9 @@ if __name__ == '__main__':
     Session = sessionmaker(bind=engine)
     session = Session()
     
-    session.query(Restaurant).delete()
-    session.query(Review).delete()
-    session.query(Customer).delete()
+    # session.query(Restaurant).delete()
+    # session.query(Review).delete()
+    # session.query(Customer).delete()
     
     fake = Faker()
     

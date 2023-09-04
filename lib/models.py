@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine, inspect
 from sqlalchemy import ForeignKey, Table, Column, Integer, String
-from sqlalchemy.orm import relationship, backref
+from sqlalchemy.orm import relationship, backref, session
 from sqlalchemy.ext.declarative import declarative_base
 
 engine = create_engine('sqlite:///restaurbase.db')
@@ -42,8 +42,9 @@ class Restaurant(Base):
     #This should return an list of strings with all the reviews for this restaurant
     #"Review for {insert restaurant name} by {insert customer's full name}: {insert review star_rating} stars.",
     def restaurant_all_reviews(self):
-        restaurant_review = [review.review_full_review() for review in self.reviews]
-        return restaurant_review
+        restaurant_review = session.query(Review).order_by(restaurant_id=self.id).all()
+        return[review.review_full_review() for review in restaurant_review]
+
    
     def __repr__(self):
         return f'Restaurant (id={self.id}, ' + \
