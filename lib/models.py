@@ -29,7 +29,7 @@ class Restaurant(Base):
     price = Column(Integer())
     
     customers = relationship('Customer', secondary=restaurant_customer, back_populates='restaurants')
-    reviews = relationship('Review', backref=backref('restaurant'), cascade='all, delete-orphan')
+    reviews = relationship('Review', back_populates='restaurant', cascade='all, delete-orphan')
     
     # Return a collection of reviews associated with the restaurant 
     def restaurant_reviews(self):
@@ -63,7 +63,7 @@ class Customer(Base):
     last_name = Column(String())
     
     restaurants = relationship('Restaurant', secondary=restaurant_customer, back_populates='customers')
-    reviews = relationship('Review', backref=backref('customer'), cascade='all, delete-orphan')
+    reviews = relationship('Review', back_populates='customer', cascade='all, delete-orphan')
     
     # Return a collection of reviews left by a customer 
     def customer_reviews(self):
