@@ -1,12 +1,14 @@
 # Import necessary SQLAlchemy modules
 from sqlalchemy import create_engine, inspect
 from sqlalchemy import ForeignKey, Table, Column, Integer, String
-from sqlalchemy.orm import relationship, backref, session
+from sqlalchemy.orm import relationship, backref, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
 # Create a SQLAlchemy database engine
 engine = create_engine('sqlite:///restaurbase.db')
 inspector = inspect(engine)
+Session = sessionmaker(bind=engine)
+session = Session()
 
 # Create a base class for declarative models
 Base = declarative_base()
@@ -41,7 +43,7 @@ class Restaurant(Base):
     
     # This method returns one restaurant instance with the highest price
     @classmethod
-    def restaurant_fanciest(cls, session):
+    def restaurant_fanciest(cls, ):
         return session.query(cls).order_by(cls.price.desc()).first()
     
     # This should return a list of strings with all the reviews for this restaurant
@@ -89,7 +91,7 @@ class Customer(Base):
         self.reviews.append(review)
     
     # Delete reviews for a specific restaurant
-    def customer_delete_reviews(self, restaurant, session):
+    def customer_delete_reviews(self, restaurant):
         for review in self.reviews:
             if review.restaurant_id == restaurant.id:
                 session.delete(review) # Delete the review from the database
@@ -112,15 +114,17 @@ class Review(Base):
     restaurant_id = Column(Integer(), ForeignKey('restaurants.id'))
     customer_id = Column(Integer(), ForeignKey('customers.id'))
     
+    restaurant = relationship ('Restaurant', back_populates= 'reviews' )
+    customer = relationship ('Customer', back_populates= 'reviews')
     # Return the customer instance associated with the review 
-    @property
+    
     def review_customer(self):
-        return self.customer_id 
+        return self.customer 
     
     # Return restaurant instance associated with the review
-    @property 
+    
     def review_restaurant(self):
-        return self.restaurant_id
+        return self.restaurant
         
     # Return a string with the full review information
     def review_full_review(self):

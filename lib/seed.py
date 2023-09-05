@@ -12,9 +12,9 @@ if __name__ == '__main__':
     session = Session()
     
     # Uncomment and use these lines to clear existing data in the database
-    # session.query(Restaurant).delete()
-    # session.query(Review).delete()
-    # session.query(Customer).delete()
+    session.query(Restaurant).delete()
+    session.query(Review).delete()
+    session.query(Customer).delete()
     
     fake = Faker()
     
